@@ -1,4 +1,5 @@
 import { FiHome } from "react-icons/fi";
+import LeafletGeopointInput from "sanity-plugin-leaflet-input";
 
 export default {
   name: "property",
@@ -58,6 +59,7 @@ export default {
       name: "location",
       title: "Location",
       type: "geopoint",
+      inputComponent: LeafletGeopointInput,
     },
     {
       name: "keywords",
