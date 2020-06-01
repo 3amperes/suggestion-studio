@@ -8,6 +8,7 @@ import rent from "./rent";
 import richText from "./richText";
 import figure from "./figure";
 import property from "./property";
+import place from "./place";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -20,6 +21,7 @@ export default createSchema({
     rent,
     richText,
     figure,
-    property
-  ])
+    property,
+    place,
+  ]),
 });

@@ -56,6 +56,13 @@ export default {
       type: "figure",
     },
     {
+      name: "city",
+      title: "Ville",
+      type: "reference",
+      to: [{ type: "city" }],
+      validation: (Rule) => Rule.required(),
+    },
+    {
       name: "location",
       title: "Location",
       type: "geopoint",
