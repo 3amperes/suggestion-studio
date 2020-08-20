@@ -19,4 +19,17 @@ export default {
       to: [{ type: 'place' }],
     },
   ],
+  preview: {
+    select: {
+      title: 'name',
+      subtitle: 'city.name',
+    },
+    prepare(selection) {
+      const { title, subtitle } = selection;
+      return {
+        title,
+        subtitle,
+      };
+    },
+  },
 };

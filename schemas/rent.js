@@ -2,14 +2,14 @@ import { FiKey } from 'react-icons/fi';
 
 export default {
   name: 'rent',
-  title: 'Location',
+  title: 'À Louer',
   type: 'document',
   icon: FiKey,
   fields: [
     {
-      name: 'internalRef',
+      name: 'slugRef',
       title: 'Référence',
-      type: 'string',
+      type: 'slug',
       validation: (Rule) => Rule.required(),
     },
     {
@@ -28,6 +28,7 @@ export default {
       type: 'property',
       options: {
         collapsible: true,
+        collapsed: false,
       },
     },
     { name: 'description', title: 'Description', type: 'richText' },
@@ -54,7 +55,7 @@ export default {
   ],
   preview: {
     select: {
-      ref: 'internalRef',
+      ref: 'slugRef.current',
       title: 'title',
       city: 'property.place.name',
       sector: 'property.zone.name',
