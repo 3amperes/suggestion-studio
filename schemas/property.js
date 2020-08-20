@@ -1,82 +1,108 @@
-import { FiHome } from "react-icons/fi";
-import LeafletGeopointInput from "sanity-plugin-leaflet-input";
+import { FiHome } from 'react-icons/fi';
+import LeafletGeopointInput from 'sanity-plugin-leaflet-input';
 
 export default {
-  name: "property",
-  title: "Bien Immobilier",
-  type: "document",
+  name: 'property',
+  title: 'Bien Immobilier',
+  type: 'object',
   fields: [
     {
-      name: "title",
-      title: "Titre",
-      type: "string",
-    },
-    {
-      name: "category",
-      title: "Categorie",
-      type: "string",
-      options: {
-        list: [
-          { title: "Appartement", value: "apartment" },
-          { title: "Maison", value: "house" },
-          { title: "Autre (garage, atelier, etc)", value: "other" },
-        ],
-        layout: "radio",
-      },
+      name: 'type',
+      title: 'Type',
+      type: 'reference',
+      to: [{ type: 'category' }],
       validation: (Rule) => Rule.required(),
     },
     {
-      name: "floor",
-      title: "Étage",
-      type: "number",
-      validation: (Rule) => Rule.integer(),
-    },
-    {
-      name: "type",
-      title: "Type",
-      type: "string",
+      name: 'rooms',
+      title: 'Nombre de pièces',
+      type: 'number',
       options: {
-        list: [
-          { title: "T1", value: "1" },
-          { title: "T2", value: "2" },
-          { title: "T3", value: "3" },
-          { title: "T4", value: "4" },
-          { title: "T5", value: "5" },
-        ],
+        list: [1, 2, 3, { value: 4, title: '4 et plus' }],
       },
     },
     {
-      name: "surface",
-      title: "Surface",
-      type: "number",
+      name: 'area',
+      title: 'Surface',
+      type: 'number',
     },
+
     {
-      name: "thumbnail",
-      title: "Vignette",
-      type: "figure",
-    },
-    {
-      name: "city",
-      title: "Ville",
-      type: "reference",
-      to: [{ type: "city" }],
+      name: 'place',
+      title: 'Ville',
+      type: 'reference',
+      to: [{ type: 'place' }],
       validation: (Rule) => Rule.required(),
     },
     {
-      name: "location",
-      title: "Location",
-      type: "geopoint",
+      name: 'zone',
+      title: 'Secteur',
+      type: 'reference',
+      to: [{ type: 'zone' }],
+      options: {
+        filter: ({ document }) => {
+          // Always make sure to check for document properties
+          // before attempting to use them
+          if (!document.property.place) {
+            return {};
+          }
+
+          return {
+            filter: 'city._ref == $city._ref',
+            params: {
+              city: document.property.place,
+            },
+          };
+        },
+      },
+    },
+    {
+      name: 'location',
+      title: 'Location',
+      type: 'geopoint',
       inputComponent: LeafletGeopointInput,
     },
     {
-      name: "keywords",
-      type: "array",
-      title: "Keywords",
-      description: "Add keywords that describes your event.",
-      of: [{ type: "string" }],
+      name: 'keywords',
+      type: 'array',
+      title: 'Keywords',
+      description: 'Add keywords that describes your event.',
+      of: [{ type: 'string' }],
       options: {
-        layout: "tags",
+        layout: 'tags',
       },
+    },
+    {
+      name: 'gallery',
+      title: 'Galerie',
+      type: 'array',
+      of: [{ type: 'figure' }],
+    },
+    {
+      name: 'detail',
+      type: 'array',
+      title: 'Caractéristiques Détaillées',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'label', type: 'string', title: 'Titre' },
+            { name: 'desc', type: 'string', title: 'desc' },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'dpe',
+      type: 'number',
+      title: 'Consommation énergétique (DPE)',
+      description: 'en KWh/m²/an',
+    },
+    {
+      name: 'ges',
+      type: 'number',
+      title: 'Émission de gaz à effet de serre (GES)',
+      description: 'en  kg éq CO2/m²/an',
     },
   ],
 };

@@ -1,10 +1,10 @@
-import { FiMapPin } from 'react-icons/fi';
+import { FiTag } from 'react-icons/fi';
 
 export default {
-  name: 'place',
-  title: 'Villes',
+  name: 'category',
+  title: 'Types de bien',
   type: 'document',
-  icon: FiMapPin,
+  icon: FiTag,
   fields: [
     {
       name: 'name',

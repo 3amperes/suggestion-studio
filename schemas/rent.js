@@ -1,54 +1,78 @@
-import { FiMapPin } from "react-icons/fi";
+import { FiKey } from 'react-icons/fi';
 
 export default {
-  name: "rent",
-  title: "Annonce de location",
-  type: "document",
-  icon: FiMapPin,
+  name: 'rent',
+  title: 'Location',
+  type: 'document',
+  icon: FiKey,
   fields: [
     {
-      name: "rentReference",
-      title: "Référence",
-      type: "string",
-      validation: Rule => Rule.required()
+      name: 'internalRef',
+      title: 'Référence',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
     },
-    { name: "date", title: "Date", type: "date" },
     {
-      name: "property",
-      title: "Bien",
-      type: "reference",
-      to: [{ type: "property" }],
-      validation: Rule => Rule.required()
-    }
-    // {
-    //   name: "thumbnail",
-    //   title: "Vignette",
-    //   type: "figure"
-    // },
-    // {
-    //   name: "description",
-    //   title: "Description",
-    //   type: "richText"
-    // },
-    // {
-    //   name: "rent",
-    //   title: "Loyer",
-    //   type: "number"
-    // },
-    // {
-    //   name: "charges",
-    //   title: "Prix des charges",
-    //   type: "number"
-    // },
-    // {
-    //   name: "depositAmount",
-    //   title: "Montant du dépôt de garantie",
-    //   type: "number"
-    // },
-    // {
-    //   name: "rentalAmount",
-    //   title: "Montant des honoraires de location",
-    //   type: "number"
-    // }
-  ]
+      name: 'title',
+      title: 'Titre',
+      type: 'string',
+    },
+    {
+      name: 'thumbnail',
+      title: 'Vignette',
+      type: 'figure',
+    },
+    {
+      name: 'property',
+      title: 'Bien immobilier',
+      type: 'property',
+      options: {
+        collapsible: true,
+      },
+    },
+    { name: 'description', title: 'Description', type: 'richText' },
+    {
+      name: 'price',
+      title: 'Loyer CC',
+      type: 'number',
+      description: 'en €',
+    },
+    {
+      name: 'priceDetail',
+      type: 'array',
+      title: 'Détail du prix',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'label', type: 'string', title: 'Titre' },
+            { name: 'desc', type: 'number', title: 'Prix' },
+          ],
+        },
+      ],
+    },
+  ],
+  preview: {
+    select: {
+      ref: 'internalRef',
+      title: 'title',
+      city: 'property.place.name',
+      sector: 'property.zone.name',
+      media: 'thumbnail',
+    },
+    prepare(selection) {
+      const { title, city, sector, media, ref } = selection;
+      function getSubtitle() {
+        if (!!sector) {
+          return `${city} - ${sector}`;
+        }
+        return city;
+      }
+      return {
+        title: `[${ref}] ${title}`,
+        subtitle: getSubtitle(),
+        media: media,
+      };
+    },
+  },
 };
