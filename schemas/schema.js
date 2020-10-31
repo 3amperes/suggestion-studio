@@ -4,6 +4,7 @@ import createSchema from 'part:@sanity/base/schema-creator';
 // Then import schema types from any plugins that might expose them
 import schemaTypes from 'all:part:@sanity/base/schema-type';
 
+import settings from './settings';
 import rent from './rent';
 import buy from './buy';
 import richText from './richText';
@@ -21,8 +22,9 @@ export default createSchema({
   // to the ones provided by any plugins that are installed
   types: schemaTypes.concat([
     /* Your types here! */
+    settings,
     rent,
-    // buy,
+    buy,
     richText,
     figure,
     property,

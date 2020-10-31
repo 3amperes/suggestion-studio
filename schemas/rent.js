@@ -1,5 +1,13 @@
 import { FiKey } from 'react-icons/fi';
 
+function generateSlugFromCount(input, type) {
+  const query = 'count(*[_type=="rent"])';
+  return sanityClient.fetch(query).then((count) => {
+    console.log('rent count', count);
+    return `SAL${count + 1}`;
+  });
+}
+
 export default {
   name: 'rent',
   title: 'À Louer',
@@ -11,6 +19,9 @@ export default {
       title: 'Référence',
       type: 'slug',
       validation: (Rule) => Rule.required(),
+      options: {
+        slugify: generateSlugFromCount,
+      },
     },
     {
       name: 'title',

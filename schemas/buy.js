@@ -2,24 +2,39 @@ import { FiPenTool } from 'react-icons/fi';
 
 export default {
   name: 'buy',
-  title: 'Vente',
+  title: 'À Vendre',
   type: 'document',
   icon: FiPenTool,
   fields: [
     {
-      name: 'buyReference',
+      name: 'slugRef',
       title: 'Référence',
-      type: 'string',
+      type: 'slug',
       validation: (Rule) => Rule.required(),
     },
     {
-      name: 'property',
-      title: 'Bien',
-      type: 'property',
+      name: 'title',
+      title: 'Titre',
+      type: 'string',
     },
     {
+      name: 'thumbnail',
+      title: 'Vignette',
+      type: 'figure',
+    },
+    {
+      name: 'property',
+      title: 'Bien immobilier',
+      type: 'property',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+    },
+    { name: 'description', title: 'Description', type: 'richText' },
+    {
       name: 'price',
-      title: 'Loyer CC',
+      title: 'Prix',
       type: 'number',
       description: 'en €',
     },
@@ -38,4 +53,27 @@ export default {
       ],
     },
   ],
+  preview: {
+    select: {
+      ref: 'slugRef.current',
+      title: 'title',
+      city: 'property.place.name',
+      sector: 'property.zone.name',
+      media: 'thumbnail',
+    },
+    prepare(selection) {
+      const { title, city, sector, media, ref } = selection;
+      function getSubtitle() {
+        if (!!sector) {
+          return `${city} - ${sector}`;
+        }
+        return city;
+      }
+      return {
+        title: `[${ref}] ${title}`,
+        subtitle: getSubtitle(),
+        media: media,
+      };
+    },
+  },
 };
