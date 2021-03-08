@@ -23,6 +23,11 @@ export default {
       type: 'string',
     },
     {
+      title: 'Date',
+      name: 'date',
+      type: 'date',
+    },
+    {
       name: 'thumbnail',
       title: 'Vignette',
       type: 'figure',
